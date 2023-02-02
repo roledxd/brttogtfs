@@ -1,12 +1,12 @@
 {
   "name": "brtgtfs",
   "version": "1.0.0",
-  "description": "",
+  "description": "BRT format to GTFS converter",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Roman Ledjajev",
   "license": "ISC",
   "dependencies": {
     "fs": "^0.0.1-security"

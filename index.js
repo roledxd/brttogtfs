@@ -41,7 +41,7 @@ try {
 }
 
 function exportcsv(){
-    var toexport = "stop_id,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url\n";
+    var toexport = "stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url\n";
     stops.forEach((stop)=>{
         toexport += Object.keys(stop).map(function(k){return stop[k]}).join(",") + ",,\n";
     })

@@ -50,6 +50,7 @@ try {
     return console.log('[BRTGTFS] Failed to read stops input file.\n' + err)
 }
 
+<<<<<<< HEAD
 
 var shapesobj = [];
 
@@ -72,6 +73,12 @@ try {
         if (processed >= shapes.length) {
             exportcsv('shapes', shapesobj)
         }
+=======
+function exportcsv(){
+    var toexport = "stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url\n";
+    stops.forEach((stop)=>{
+        toexport += Object.keys(stop).map(function(k){return stop[k]}).join(",") + ",,\n";
+>>>>>>> e4738b91d4dc811b1b2e16fcf8401d50f1296091
     })
 } catch (err) {
     return console.log('[BRTGTFS] Failed to read stops input file.\n' + err)

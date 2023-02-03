@@ -1,10 +1,14 @@
+const ShapePoint = require('./classes/ShapePoint')
+const exportcsv = require('./utils/exportcsv');
+const Stop = require('./classes/Stop')
+const exportDir = './export';
 const fs = require('fs');
 
-const Stop = require('./classes/Stop')
-
-const exportDir = './export';
-
-const exportcsv = require('./utils/exportcsv');
+const dir = {
+    stops: './input/stops.csv',
+    routes: './input/routes.csv',
+    shapes: './input/shapes.csv'
+}
 
 console.log("[BRTGTFS] Program is started")
 
@@ -13,11 +17,7 @@ if (!fs.existsSync(exportDir)) {
     console.log("[BRTGTFS] Created export firectory.")
 } else console.log("[BRTGTFS] Export folder is found!")
 
-const dir = {
-    stops: './input/stops.csv',
-    routes: './input/routes.csv',
-    shapes: './input/shapes.csv'
-}
+
 
 var stops = [];
 var failures = 0
@@ -52,37 +52,35 @@ try {
 
 
 var shapesobj = [];
+var failures = 0;
 
 try {
     console.log("[BRTGTFS] Reading shapes input file")
     const data = String(fs.readFileSync(dir.shapes, 'utf8'));
-    const shapes = data.split(',,,,,');
-    shapes.shift(); //remove header
+    const shapes = data.split(',,,,,,');
+    console.log(shapes.length)
     var processed = 0
     shapes.forEach((shape) => {
         processed += 1;
         const shape_points = shape.split('\n');
+        if(shape_points.length < 10){
+            failures += 1;
+            processed -= 1;
+        };
         var processed_points = 0;
         shape_points.forEach((shape_point) => {
             if (shape_point.length < 10) return;
             processed_points += 1
             const sp = new ShapePoint(shape_point, processed, processed_points);
+            if(shape_point.includes('shape_pt_lat')) return processed_points -= 1;
+            if(shape_points.length < 10) return;
             return shapesobj.push(sp);
         })
-        if (processed >= shapes.length) {
+        if (processed >= shapes.length - failures) {
             exportcsv('shapes', shapesobj)
         }
     })
 } catch (err) {
     return console.log('[BRTGTFS] Failed to read stops input file.\n' + err)
-}
-
-function ShapePoint(row, shape_id, point_number) {
-    const sp_data = row.split(',')
-    this.shape_id = shape_id;
-    const coords = sp_data[1].split(' ');
-    this.shape_pt_lat = coords[0];
-    this.shape_pt_lon = coords[1];
-    this.shape_pt_sequence = point_number;
 }
 

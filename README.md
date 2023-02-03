@@ -17,6 +17,6 @@ Install brttogtfs with npm
     
 ## Working
 1. Create folder named "**input**"
-2. Put **stops.csv** in the created folder
+2. Put **stops.csv** and **shapes.csv** in the created folder
 3. Launch **run.bat**
 4. Done! New folder "**export**" must appear with "**stops.txt**" inside it

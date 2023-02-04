@@ -1,2 +1,0 @@
-agency_url,agency_timezone,agency_id,agency_name
-https://unhabitat.org/project/the-bus-rapid-transit-project-brt,Africa/Tanzania,BRTA,Bus rapid transit in Africa

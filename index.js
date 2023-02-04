@@ -1,5 +1,6 @@
 const ShapePoint = require('./classes/ShapePoint')
 const exportcsv = require('./utils/exportcsv');
+const Route = require('./classes/Route')
 const Stop = require('./classes/Stop')
 const exportDir = './export';
 const fs = require('fs');
@@ -7,7 +8,8 @@ const fs = require('fs');
 const dir = {
     stops: './input/stops.csv',
     routes: './input/routes.csv',
-    shapes: './input/shapes.csv'
+    shapes: './input/shapes.csv',
+    agency: './input/agency.json'
 }
 
 console.log("[BRTGTFS] Program is started")
@@ -17,7 +19,10 @@ if (!fs.existsSync(exportDir)) {
     console.log("[BRTGTFS] Created export firectory.")
 } else console.log("[BRTGTFS] Export folder is found!")
 
+const agency = JSON.parse(fs.readFileSync(dir.agency));
 
+exportcsv('agency', [agency]);
+console.log("[BRTGTFS] Created an agency file")
 
 var stops = [];
 var failures = 0
@@ -39,10 +44,8 @@ try {
         if (row.length < 5) { failures += 1 };
         if (row.length > 5 && !row.includes("stop_name")) {
             stops.push(stop);
-            //console.log("[BRTGTFS] Processing... (" + processed + "/" + stoprows.length + ") " + stop.stop_name + " | " + stop.stop_code)
         }
         if (processed >= stoprows.length - failures) {
-            console.log("[BRTGTFS] Processing completed! Now exporting...")
             return exportcsv("stops", stops);
         }
     })
@@ -58,7 +61,6 @@ try {
     console.log("[BRTGTFS] Reading shapes input file")
     const data = String(fs.readFileSync(dir.shapes, 'utf8'));
     const shapes = data.split(',,,,,,');
-    console.log(shapes.length)
     var processed = 0
     shapes.forEach((shape) => {
         processed += 1;
@@ -84,3 +86,21 @@ try {
     return console.log('[BRTGTFS] Failed to read stops input file.\n' + err)
 }
 
+var routesobj = [];
+var failures = 0;
+
+try {
+    console.log("[BRTGTFS] Reading routes input file")
+    const data = String(fs.readFileSync(dir.routes, 'utf8'));
+    const routes = data.split('\r\n');
+    var processed = 0
+    routes.forEach((route) => {
+        if(route.length < 5) return;
+        if(route.includes("route_id")) return;
+        processed += 1;
+        routesobj.push(new Route(route, agency));
+    })
+    exportcsv('routes', routesobj)
+} catch (err) {
+    return console.log('[BRTGTFS] Failed to read stops input file.\n' + err)
+}

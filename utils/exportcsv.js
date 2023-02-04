@@ -11,8 +11,12 @@ module.exports = function exportcsv(type, content) {
             export_content = "stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon\n";
             export_name = "stops.txt";
             break;
+        case "agency":
+            export_content = "agency_id,agency_name,agency_url,agency_timezone\n";
+            export_name = "agency.txt";
+            break;
         case "routes":
-            export_content = "route_id,agency_id,route_short_name,route_long_name,route_type,route_color,competent_authority,route_desc\n";
+            export_content = "route_id,agency_id,route_short_name,route_long_name,route_type\n";
             export_name = "routes.txt";
             break;
         case "shapes":

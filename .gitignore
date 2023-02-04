@@ -1,4 +1,6 @@
 /export
-/input
+/input/routes.csv
+/input/shapes.csv
+/input/stops.csv
 /node_modules
 /package-lock.json

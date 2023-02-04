@@ -16,7 +16,7 @@ Install brttogtfs with npm
 ```
     
 ## Working
-1. Create folder named "**input**"
-2. Put **stops.csv** and **shapes.csv** in the created folder
+1. Fill in file located in /input folder 'agency.json'
+2. Put **stops.csv**, **routes.csv** and **shapes.csv** in the created folder
 3. Launch **run.bat**
 4. Done! New folder "**export**" must appear with "**stops.txt**" inside it
